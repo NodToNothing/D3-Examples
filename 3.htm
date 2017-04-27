@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Data and Text Example</title>
+   <script src="http://d3js.org/d3.v2.js"></script>
+
+   <style type="text/css">
+	p {
+   font: 20px sans-serif;
+   background-color: orange;
+   text-align: left;
+   padding: 3px;
+   margin: 1px;
+   color: white;
+ }
+    </style>
+</head>
+<body>
+ 
+		<script type="text/javascript">
+		
+			var dataset = [ 1,2,3,5,8,13,21,34,55,89 ];
+			
+//still in a <p/> so css is still applied.
+//.text() assigns the text - before we return a fixed string, here we're returning the data using a d3 construct - d is an item in the data(dataset) method - e.g. dataset[2]
+
+			d3.select("body").selectAll("p")
+				.data(dataset)
+				.enter()
+				.append("p")
+				.text(function(d) { return "Fibonacci next: " + d; });
+			
+		</script>
+
+</body>
+</html>

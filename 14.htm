@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Geo</title>
+   <script src="http://d3js.org/d3.v2.js"></script>
+	</head>
+	<body>
+
+	<script type="text/javascript">
+
+		var length = 300;
+		var width = 350;
+		var height = 350;
+
+		var svg = d3.select('body').append('svg')
+			.attr('width', width)
+			.attr('height', height);
+		var group = svg.append('g');
+
+		var centered;
+
+		var projection = d3.geo.albersUsa();
+		var path = d3.geo.path().projection(projection);
+		group.attr('transform', 'scale(.3, .3)');
+
+		var color = d3.scale.linear().domain([1,12]).range(['red', 'blue']);
+
+		d3.json('us-states.txt', function(collection) {
+			group.selectAll('path')
+			.data(collection.features)
+			.enter().append('path')
+			.attr('d', d3.geo.path().projection(projection))
+			.attr('id', function(d){return d.properties.name.replace(/\s+/g, '')})
+			.style('fill', function(d){return color( d.properties.name.replace(/\s+/g, '').length);})
+			.style('stroke', 'white')
+			.style('stroke-width', 1)
+			.on('click', click);
+
+			function click(d) {
+				var x = 0,
+				y = 0,
+				k = .3;
+
+				if (d && centered !== d) {
+					var centroid = path.centroid(d);
+					x = -centroid[0] + width/4;
+					y = -centroid[1] + height/4;
+					k = 2;
+					centered = d;
+				} else {
+					centered = null;
+				}
+
+				group.selectAll("path").classed("active", centered && function(d) { return d === centered; });
+
+				group.transition()
+					.duration(1000)
+					.attr("transform", "scale(" + k + ")translate(" + x + width/2 + "," + y + ")")
+					.style("stroke-width", 1.5 / k + "px");
+		}
+
+		});
+</script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Putting it Together SVG Style</title>
+   <script src="http://d3js.org/d3.v2.js"></script>
+
+<!-- leaving out the css styles again so we can code it up in D3 -->
+
+</head>
+<body>
+
+		<script type="text/javascript">
+
+			var h = 500;
+			var w = 1000;
+			var p = 1; //padding
+			var dv = 30; //numbber of data values
+			var barScale = 4; //multiplier for bar sizes for view purposes
+
+			//we're not going to use this one
+			var dataset = [ 22,39,56 ];
+
+			//create the random dataset
+			//var dataset = [];
+			//for (var iter = 0; iter < dv; iter++) {
+			//	var rndNum = Math.round(Math.random() * 100);
+			//	dataset = dataset.concat(rndNum);
+			//}
+
+			var svg = d3.select("body").append("svg").attr("width", w).attr("height", h);
+
+			//x function is based on length of set, so is width
+			//height is skewed * 4 for larger view of set
+			//fill returns a rgb value using the dataset value for blue - so it will be shades of blue
+			//moved it to the middle - it'll give shades of green.
+			//why not do all 3 for maximum amusement
+			svg.selectAll("rect").data(dataset).enter().append("rect")
+				.attr("x", function(d,i) {
+					return i * (w / dataset.length);
+				})
+			  	 .attr("y", function(d) {
+			   		return h - (d * barScale);
+				   })
+				.attr("width", w / dataset.length - p)
+			  	.attr("height", function(d) {
+				   	return d * barScale;
+				 })
+				 .attr("fill", function(d) {
+					return "rgb(0," + (d*10) + ", 0)";
+					//don't do that, it'll push it over the limits because of your
+					//max value, 3 will give lots of grays
+					//even with this one, you get some funny values that push
+					//past 255
+					return "rgb(" + (d*5) + "," + (d*5) + "," + (d*5) + ")";
+				  });
+
+			//grab the text elements
+			//set the text as the number in the set
+			//anchor it to the middle, set the x/y based on the bars
+			//give it some css that's probably more appropriate in the style
+			//element above.
+			svg.selectAll("text").data(dataset).enter().append("text")
+			   	.text(function(d) {
+				   	return d;
+				   })
+				   .attr("text-anchor", "middle")
+				   .attr("x", function(d, i) {
+				   	return i * (w / dataset.length) + (w / dataset.length - p) / 2;
+				   })
+				   .attr("y", function(d) {
+				   	return h - (d * barScale) + 14;
+				   })
+				   .attr("font-family", "sans-serif")
+				   .attr("font-size", "11px")
+				   .attr("fill", "white");
+		</script>
+
+</body>
+</html>

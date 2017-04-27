@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Lots of Bars</title>
+   <script src="http://d3js.org/d3.v2.js"></script>
+
+<!-- back to styles -->
+<!-- margin-right: 2px adds the space between the bars -->
+
+		<style type="text/css">
+		
+			div.bar {
+				display: inline-block;
+				width: 20px;
+				height: 75px;
+				background-color: orange;
+				margin-right: 2px;
+			}
+		
+		</style>
+
+</head>
+<body>
+ 
+		<script type="text/javascript">
+		
+			var dataset = [ 1,2,3,5,8,13,21,34,55,89 ];
+			
+			// use 75 to show it wraps...
+			// using concat, not push
+			//Like push( ), concat( ) adds elements to the end of an array. Unlike push( ), concat( ) does not modify the array on which it is invoked -- 
+			//instead, concat( ) returns a new array. Furthermore, concat( ) can break arrays supplied as arguments into individual elements, 
+			//allowing it to combine two arrays into a single, new array.
+
+			var dataset = [];
+			for (var iter = 0; iter < 75; iter++) {
+				//var rndNum = Math.random() * 100; 
+				//so we don't get floating point
+				var rndNum = Math.round(Math.random() * 100);
+				dataset = dataset.concat(rndNum);
+			}
+
+			//dataset.sort(d3.ascending);
+			//dataset.sort(d3.descending);
+			//dataset.sort(d3.shuffle);  //fisher-yates shuffle - http://bost.ocks.org/mike/shuffle/
+
+			d3.select("body").selectAll("div")
+				.data(dataset)
+				.enter()
+				.append("div")
+				.attr("class", "bar")
+				.style("height", function(d) {
+				    return d*5 + "px";
+				});
+			
+		</script>
+
+</body>
+</html>

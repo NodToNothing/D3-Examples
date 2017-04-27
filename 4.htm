@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Style() added to the chain</title>
+   <script src="http://d3js.org/d3.v2.js"></script>
+
+   <!-- NO STYLE -->
+
+</head>
+<body>
+ 
+		<script type="text/javascript">
+		
+			var dataset = [ 1,2,3,5,8,13,21,34,55,89 ];
+			
+//.style() as d3 chain.  Note...this sucks.  Use CSS instead.
+
+			d3.select("body").selectAll("p")
+				.data(dataset)
+				.enter()
+				.append("p")
+				.text(function(d) { return "Fibonacci next: " + d; })
+				.style("color","white")
+				.style("background-color","orange");
+			
+		</script>
+
+</body>
+</html>

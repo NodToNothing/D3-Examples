@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Axes</title>
+   <script src="http://d3js.org/d3.v2.js"></script>
+
+
+		<style type="text/css">
+			
+			.axis path,
+			.axis line {
+				fill: none;
+				stroke: black;
+				shape-rendering: crispEdges;
+			}
+			
+			.axis text {
+				font-family: sans-serif;
+				font-size: 11px;
+			}
+
+		</style>
+
+</head>
+<body>
+ 
+		<script type="text/javascript">
+		
+			var h = 1000;
+			var w = 1000;
+
+			//Padding is VERY important for your labels
+			//otherwise they won't show up
+			//show a padding of 1 to demonstrate
+
+			//also, if your r is bigger
+			//you'll get things trickling over the axes
+			//see the rScale below and go to 10,25 as an example
+			var p = 30; //padding
+			var dv = 500; //number of data values
+			var barScale = 4; //multiplier for bar sizes for view purposes
+
+			//we're not going to use this one
+			//var dataset = [ 1,2,3,5,8,13,21,34,55,89 ];
+			
+			//create the random dataset
+			var dataset = [];
+
+			//do it the easy way
+			for (var iter = 0; iter < dv; iter++) {
+				var rndNum = Math.round(Math.random() * w);
+				var rndNumb = Math.round(Math.random() * h);
+				dataset = dataset.concat([[rndNum, rndNumb]]);
+			}
+
+			//Create scale functions
+			var xScale = d3.scale.linear()
+				.domain([0, d3.max(dataset, function(d) { return d[0]; })])
+				.range([p, w - p * 2]);
+
+			var yScale = d3.scale.linear()
+				.domain([0, d3.max(dataset, function(d) { return d[1]; })])
+				.range([h - p, p]);
+
+			//this makes your circles nice and small (between 2 and 5)
+			var rScale = d3.scale.linear()
+				.domain([0, d3.max(dataset, function(d) { return d[1]; })])
+				 .range([5,10]);
+
+			//Define X axis
+			var xAxis = d3.svg.axis()
+				.scale(xScale)
+				.orient("bottom")
+				 .ticks(10);
+
+			//Define Y axis
+			var yAxis = d3.svg.axis()
+				 .scale(yScale)
+				.orient("left")
+				 .ticks(10);
+
+
+			var svg = d3.select("body").append("svg").attr("width", w).attr("height", h);
+
+			//getting the random rgb to work was harder than it looks - misplaced a ; somewhere
+			//and it all went straight to hell
+			//works, nice confetti look.
+
+			//used a square root on the radius, which is funny because
+			//those toward the bottom are smaller, gives a soda/pop effect
+			//need to go truly random if you want a random distribution
+			//of circle sizes
+
+			//title will make a title element within each svg element
+			//which is where you want it for most tooltip like
+			//functionality
+			//note, rendering all those tooltips on the SVG seems to be
+			//SLOW
+			svg.selectAll("circle").data(dataset).enter().append("circle")
+ 				 .attr("cx", function(d) {
+				 	return xScale(d[0]);
+ 				  })
+ 				  .attr("cy", function(d) {
+  				      return yScale(d[1]);
+ 				  })
+   				.attr("r", function(d) {
+    					return rScale(d[1]);
+				})
+				 .attr("fill", function(d) {
+				   return "rgb(" + Math.round(Math.random() * 255) + "," + Math.round(Math.random() * 255) + "," + Math.round(Math.random() * 255) + ")";
+				})
+				.append("title");
+
+			//ha, append and then set the text on the elements
+			svg.selectAll("title").text(function(d) {
+				return d[0] + "," + d[1];
+			});
+
+			//now let's really go nuts and label them all
+			//a good app would let us hover over any of these
+			//and get the labeling to display as hover text
+			//easy way might be to use title attribute
+			svg.selectAll("text")
+			   .data(dataset)
+			   .enter()
+			   .append("text")
+			 .text(function(d) {
+			        return d[0] + "," + d[1];
+			   })
+			   .attr("x", function(d) {
+			        return xScale(d[0]);
+			   })
+			   .attr("y", function(d) {
+			        return yScale(d[1]);
+			   })
+			 .attr("font-family", "sans-serif")
+			   .attr("font-size", "8px")
+			   .attr("fill", "purple");
+
+			//X axis
+			svg.append("g")
+				.attr("class", "axis")
+				.attr("transform", "translate(0," + (h - p) + ")")
+				.call(xAxis);
+			
+			//Y axis
+			svg.append("g")
+				.attr("class", "axis")
+				.attr("transform", "translate(" + p + ",0)")
+				.call(yAxis);
+
+		</script>
+
+</body>
+</html>

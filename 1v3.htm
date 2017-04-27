@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Paragraph Example</title>
+   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+
+   <style type="text/css">
+	p {
+   font: 20px sans-serif;
+   background-color: orange;
+   text-align: left;
+   padding: 3px;
+   margin: 1px;
+   color: white;
+ }
+    </style>
+</head>
+<body>
+ 
+		<script type="text/javascript">
+		
+			var dataset = [ 1,2,3,5,8,13,21,34,55,89 ];
+			
+//enter() does the magic, creates a stub
+
+			d3.select("body").selectAll("p")
+				.data(dataset)
+				.enter()
+				.append("p")
+				.text("Where's the Fibonacci data?!");
+			
+		</script>
+
+</body>
+</html>

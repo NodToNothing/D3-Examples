@@ -1,0 +1,25 @@
+Note you have to scroll down and resave after you change a value.
+
+var dataset = [ 1,2,3,5,8,13,21,34,55,89 ];
+			
+//More complex use of .style() to handle conditional logic
+//all the { and } and ( and ) do get a bit confusing if you're not careful.
+
+			d3.select("body").selectAll("p")
+				.data(dataset)
+				.enter()
+				.append("p")
+				.text(function(d) { return "Fibonacci next: " + d; })
+				.style("color", function(d) {
+if (d > 21) {   //Threshold of 15
+return "black";
+} else {
+return "white";
+}})
+.style("background-color", function(d) {
+if (d > 22.36) {   //Threshold of 15
+return "green";
+} else {
+return "orange";
+}
+});

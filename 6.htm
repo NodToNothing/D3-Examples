@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Lots of Bars</title>
+   <script src="http://d3js.org/d3.v2.js"></script>
+
+<!-- back to styles -->
+<!-- margin-right: 2px adds the space between the bars -->
+
+		<style type="text/css">
+		
+			div.bar {
+				display: inline-block;
+				width: 20px;
+				height: 75px;
+				background-color: orange;
+				margin-right: 2px;
+			}
+		
+		</style>
+
+</head>
+<body>
+ 
+		<script type="text/javascript">
+		
+			var dataset = [ 1,2,3,5,8,13,21,34,55,89 ];
+			
+//without the style/height you can't tell the bars apart, they get all mashed together
+//scale the bars up by just multiplying d * a factor that makes it look good.  I use *10 below.
+//fibonacci was good so I'm not giving anyone the finger :)
+
+			d3.select("body").selectAll("div")
+				.data(dataset)
+				.enter()
+				.append("div")
+				.attr("class", "bar")
+				.style("height", function(d) {
+				    return d*10 + "px";
+				});
+			
+		</script>
+
+</body>
+</html>

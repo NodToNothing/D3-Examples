@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Lots of Bars</title>
+   <script src="http://d3js.org/d3.v2.js"></script>
+
+
+
+</head>
+<body>
+ 
+<script type="text/javascript">
+		
+		var dataset = [ 1,2,3,5,8,13,21,34,55,89 ];
+		var dataset2 = [ 1,2,3,5,8,13,21,34,55,89 ];
+			
+		var w = 1000;
+		var h = 500;
+
+		var svg = d3.select("body")
+			.append("svg")
+			.attr("width", w)
+			.attr("height", h);
+
+			var circles = svg.selectAll("circle")
+			    .data(dataset)
+			    .enter()
+			    .append("circle");
+
+			//i is the index, automatically valued
+			//d is the data value, automatically valued.
+			circles.attr("cx", function(d, i) {
+				return (i * 75) + 50;})
+				   .attr("cy", h/4)
+				   .attr("r", function(d) {
+				   return d;})
+				.attr("fill", "orange")
+				.attr("stroke", "brown")
+				.attr("stroke-width", function(d) {
+    					return d/2;
+				   });
+
+			//this is funny...if you use "circle" it will try to select circles that already exist
+			//and it doesn't like that - but you can select all ANY element and it'll put it in there.
+			//because you're selecting a holder that doesn't exist and appending circle to it.
+			//so selectAll("square") works as does the following...
+			//actually eliminates the need to use a different circles definition or a different dataset.
+			//Scott is amused.
+
+			var circles = svg.selectAll("somethingScooter")
+			    .data(dataset)
+			    .enter()
+			    .append("circle");
+
+			circles.attr("cx", function(d, i) {
+				return (i * 75) + 50;})
+				   .attr("cy", h/2)
+				   .attr("r", function(d) {
+				   return d;})
+				.attr("fill", "purple")
+				.attr("stroke", "green")
+				.attr("stroke-width", function(d) {
+    					return d/2;
+				   });
+			
+</script>
+
+</body>
+</html>
